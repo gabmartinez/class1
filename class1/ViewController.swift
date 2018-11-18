@@ -15,29 +15,18 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Modificando el tamaño de text field
-//        var frameRect: CGRect = textInputName.frame;
-//        frameRect.size.height = 50;
-//        textInputName.frame = frameRect;
-        
         // Do any additional setup after loading the view, typically from a nib.
     }
 
     @IBAction func onClick(_ sender:Any) {
-        var urlComponents = URLComponents(string: "https://avires.net/suma/")!
-        print(textInput1.text!)
-        urlComponents.queryItems = [
-            URLQueryItem(name: "n1", value: textInput1.text!),
-            URLQueryItem(name: "n2", value: textInput2.text!)
-        ]
+        let urlComponents = URLComponents(string: "https://avires.net/suma/?n1=\(textInput1.text!)&n2=\(textInput2.text!)")!
         
-        let request = URLRequest(url: urlComponents.url!)
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let task = URLSession.shared.dataTask(with: URLRequest(url: urlComponents.url!)) { data, response, error in
             if let error = error {
                 print ("error: \(error)")
                 return
             }
+            
             guard let data = data,
                 let response = response as? HTTPURLResponse,
                 (200 ..< 300) ~= response.statusCode,
@@ -45,9 +34,20 @@ class ViewController: UIViewController {
                     print ("server error")
                     return
             }
-            let responseObj = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
-            print(responseObj!)
-            self.showMessage("Hello World!", message: responseObj?["mensaje"] as? String ?? "Message")
+            
+            do {
+                if let responseObj = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                {
+                    let msg: String = responseObj["enLetras"]! as? String ?? "N/A"
+                    DispatchQueue.main.async {
+                        self.showMessage("Hello World!", message: msg)
+                    }
+                } else {
+                    print("Error en la serializacion")
+                }
+            } catch let error as NSError {
+                print(error)
+            }
         }
         task.resume()
     }
