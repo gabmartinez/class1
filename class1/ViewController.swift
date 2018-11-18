@@ -23,5 +23,11 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
     }
 
+    @IBAction func onClick(_ sender:Any) {
+        let value: String = textInputName.text!
+        let alert = UIAlertController(title: "Hello World!", message: "Welcome \(value)", preferredStyle: .alert);
+        alert.addAction(UIAlertAction(title: "Close", style: .default, handler: nil));
+        self.present(alert, animated: true);
+    }
 }
 
