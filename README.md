@@ -50,7 +50,7 @@ https://avires.net/suma/
 
 ```swift
 @IBAction func onClick(_ sender:Any) {
-    let urlComponents = URLComponents(string: "https://avires.net/suma/")!
+    let urlComponents = URLComponents(string: "enlace del servicio")!
     urlComponents.queryItems = [
       URLQueryItem(name: "n1", value: "textInput1.text!"),
       URLQueryItem(name: "n2", value: "textInput2.text!")
