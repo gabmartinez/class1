@@ -9,17 +9,25 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    @IBOutlet weak var textInput1: UITextField!
-    @IBOutlet weak var textInput2: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
-
+    
+    @IBOutlet weak var textInput1: UITextField!;
+    @IBOutlet weak var textInput2: UITextField!;
+    
+    @IBOutlet weak var numberLabel: UILabel!;
+    @IBOutlet weak var letterLabel: UILabel!;
+    @IBOutlet weak var messageLabel: UILabel!;
+    
     @IBAction func onClick(_ sender:Any) {
-        let urlComponents = URLComponents(string: "https://avires.net/suma/?n1=\(textInput1.text!)&n2=\(textInput2.text!)")!
+        var urlComponents = URLComponents(string: "https://avires.net/suma/")!
+        urlComponents.queryItems = [
+            URLQueryItem(name: "n1", value: textInput1.text!),
+            URLQueryItem(name: "n2", value: textInput2.text!)
+        ];
         
         let task = URLSession.shared.dataTask(with: URLRequest(url: urlComponents.url!)) { data, response, error in
             if let error = error {
@@ -38,12 +46,13 @@ class ViewController: UIViewController {
             do {
                 if let responseObj = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
                 {
-                    let msg: String = responseObj["enLetras"]! as? String ?? "N/A"
                     DispatchQueue.main.async {
-                        self.showMessage("Hello World!", message: msg)
+                        self.numberLabel.text = String(responseObj["data"]! as! Int);
+                        self.letterLabel.text = responseObj["enLetras"]! as? String ?? "letras";
+                        self.messageLabel.text = responseObj["mensaje"]! as? String ?? "mensaje";
                     }
                 } else {
-                    print("Error en la serializacion")
+                    print("bad json")
                 }
             } catch let error as NSError {
                 print(error)
@@ -51,11 +60,6 @@ class ViewController: UIViewController {
         }
         task.resume()
     }
-    
-    func showMessage(_ title:String, message:String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert);
-        alert.addAction(UIAlertAction(title: "Close", style: .default, handler: nil));
-        self.present(alert, animated: true);
-    }
+
 }
 
