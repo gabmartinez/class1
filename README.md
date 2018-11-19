@@ -19,10 +19,10 @@ Un storyboard contiene la representación gráfica de las “pantallas” (los c
 La clase UIViewController define el comportamiento compartido que es común para todos los view controllers.
 
 Sus principales responsabilidades son las siguientes:
-⋅⋅* Actualización del contenido de las vistas.
-⋅⋅* Respondiendo a las interacciones del usuario con las vistas.
-⋅⋅* Cambiar el tamaño de las vistas y gestionar el diseño de la interfaz general.
-⋅⋅* Coordinar con otros objetos, incluidos otros view controllers, en su aplicación.
+* Actualización del contenido de las vistas.
+* Respondiendo a las interacciones del usuario con las vistas.
+* Cambiar el tamaño de las vistas y gestionar el diseño de la interfaz general.
+* Coordinar con otros objetos, incluidos otros view controllers, en su aplicación.
 
 ### ¿Qué es Outlets?
 Son propiedades especiales declaradas con la palabra clave IBOutlet. IBOutlet le indica Xcode que vamos a conectar esa propiedad con un objeto de un Storyboard.
