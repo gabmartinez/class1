@@ -1,5 +1,6 @@
 # class1
 
+## Informaciones Generales
 
 ### ¿Qué es Xcode?
 Xcode es un entorno de desarrollo integrado (IDE, en sus siglas en inglés) para macOS que contiene un conjunto de herramientas creadas por Apple destinadas al desarrollo de software para macOS, iOS, watchOS y tvOS. Su primera versión tiene origen en el año 2003 y su versión más reciente es la 10.1
@@ -39,5 +40,47 @@ La primera definición recibe como parámetro el elemento que lanzó el evento q
 ```swift
 @IBAction func var onClick(_ sender:Any) {
 
+}
+```
+
+## Código
+
+### Servicio
+https://avires.net/suma/
+
+```swift
+@IBAction func onClick(_ sender:Any) {
+    let urlComponents = URLComponents(string: "https://avires.net/suma/")!
+    urlComponents.queryItems = [
+      URLQueryItem(name: "n1", value: "textInput1.text!"),
+      URLQueryItem(name: "n2", value: "textInput2.text!")
+    ]
+    
+    let task = URLSession.shared.dataTask(with: URLRequest(url: urlComponents.url!)) { data, response, error in
+        if let error = error {
+            print ("error: \(error)")
+            return
+        }
+        
+        guard let data = data,
+            let response = response as? HTTPURLResponse,
+            (200 ..< 300) ~= response.statusCode,
+            error == nil else {
+                print ("server error")
+                return
+        }
+        
+        do {
+            if let responseObj = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            {
+                // Código que se ejecutara después que se cast los datos de la respuesta en un Diccionary
+            } else {
+                print("bad json")
+            }
+        } catch let error as NSError {
+            print(error)
+        }
+    }
+    task.resume()
 }
 ```
