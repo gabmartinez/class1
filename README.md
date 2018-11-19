@@ -1,5 +1,8 @@
 # class1
 
+## Video
+[Enlace](https://youtu.be/dq2UpOvB-P8)
+
 ## Informaciones Generales
 
 ### ¿Qué es Xcode?
